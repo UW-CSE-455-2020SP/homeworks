@@ -55,6 +55,14 @@ class MODEL(Structure):
 (LINEAR, LOGISTIC, RELU, LRELU, SOFTMAX) = range(5)
 
 
+add_image = lib.add_image
+add_image.argtypes = [IMAGE, IMAGE]
+add_image.restype = IMAGE
+
+sub_image = lib.sub_image
+sub_image.argtypes = [IMAGE, IMAGE]
+sub_image.restype = IMAGE
+
 make_image = lib.make_image
 make_image.argtypes = [c_int, c_int, c_int]
 make_image.restype = IMAGE
@@ -119,6 +127,133 @@ same_image = lib.same_image
 same_image.argtypes = [IMAGE, IMAGE]
 same_image.restype = c_int
 
+nn_resize = lib.nn_resize
+nn_resize.argtypes = [IMAGE, c_int, c_int]
+nn_resize.restype = IMAGE
+
+bilinear_resize = lib.bilinear_resize
+bilinear_resize.argtypes = [IMAGE, c_int, c_int]
+bilinear_resize.restype = IMAGE
+
+make_box_filter = lib.make_box_filter
+make_box_filter.argtypes = [c_int]
+make_box_filter.restype = IMAGE
+
+'''
+convolve_image = lib.convolve_image
+convolve_image.argtypes = [IMAGE, IMAGE, c_int]
+convolve_image.restype = IMAGE
+
+make_gaussian_filter = lib.make_gaussian_filter
+make_gaussian_filter.argtypes = [c_float]
+make_gaussian_filter.restype = IMAGE
+
+make_highpass_filter = lib.make_highpass_filter
+make_highpass_filter.argtypes = []
+make_highpass_filter.restype = IMAGE
+
+make_sharpen_filter = lib.make_sharpen_filter
+make_sharpen_filter.argtypes = []
+make_sharpen_filter.restype = IMAGE
+
+make_emboss_filter = lib.make_emboss_filter
+make_emboss_filter.argtypes = []
+make_emboss_filter.restype = IMAGE
+
+make_gy_filter = lib.make_gy_filter
+make_gy_filter.argtypes = []
+make_gy_filter.restype = IMAGE
+
+make_gx_filter = lib.make_gx_filter
+make_gx_filter.argtypes = []
+make_gx_filter.restype = IMAGE
+
+feature_normalize = lib.feature_normalize
+feature_normalize.argtypes = [IMAGE]
+feature_normalize.restype = None
+
+sobel_image = lib.sobel_image
+sobel_image.argtypes = [IMAGE]
+sobel_image.restype = POINTER(IMAGE)
+
+colorize_sobel = lib.colorize_sobel
+colorize_sobel.argtypes = [IMAGE]
+colorize_sobel.restype = IMAGE
+
+harris_corner_detector = lib.harris_corner_detector
+harris_corner_detector.argtypes = [IMAGE, c_float, c_float, c_int, POINTER(c_int)]
+harris_corner_detector.restype = POINTER(DESCRIPTOR)
+
+mark_corners = lib.mark_corners
+mark_corners.argtypes = [IMAGE, POINTER(DESCRIPTOR), c_int]
+mark_corners.restype = None
+
+detect_and_draw_corners = lib.detect_and_draw_corners
+detect_and_draw_corners.argtypes = [IMAGE, c_float, c_float, c_int]
+detect_and_draw_corners.restype = None
+
+cylindrical_project = lib.cylindrical_project
+cylindrical_project.argtypes = [IMAGE, c_float]
+cylindrical_project.restype = IMAGE
+
+structure_matrix = lib.structure_matrix
+structure_matrix.argtypes = [IMAGE, c_float]
+structure_matrix.restype = IMAGE
+
+find_and_draw_matches = lib.find_and_draw_matches
+find_and_draw_matches.argtypes = [IMAGE, IMAGE, c_float, c_float, c_int]
+find_and_draw_matches.restype = IMAGE
+
+panorama_image_lib = lib.panorama_image
+panorama_image_lib.argtypes = [IMAGE, IMAGE, c_float, c_float, c_int, c_float, c_int, c_int]
+panorama_image_lib.restype = IMAGE
+
+draw_flow = lib.draw_flow
+draw_flow.argtypes = [IMAGE, IMAGE, c_float]
+draw_flow.restype = None
+
+box_filter_image = lib.box_filter_image
+box_filter_image.argtypes = [IMAGE, c_int]
+box_filter_image.restype = IMAGE
+
+optical_flow_images = lib.optical_flow_images
+optical_flow_images.argtypes = [IMAGE, IMAGE, c_int, c_int]
+optical_flow_images.restype = IMAGE
+
+optical_flow_webcam = lib.optical_flow_webcam
+optical_flow_webcam.argtypes = [c_int, c_int, c_int]
+optical_flow_webcam.restype = None
+
+def panorama_image(a, b, sigma=2, thresh=5, nms=3, inlier_thresh=2, iters=10000, cutoff=30):
+    return panorama_image_lib(a, b, sigma, thresh, nms, inlier_thresh, iters, cutoff)
+
+
+train_model = lib.train_model
+train_model.argtypes = [MODEL, DATA, c_int, c_int, c_double, c_double, c_double]
+train_model.restype = None
+
+accuracy_model = lib.accuracy_model
+accuracy_model.argtypes = [MODEL, DATA]
+accuracy_model.restype = c_double
+
+forward_model = lib.forward_model
+forward_model.argtypes = [MODEL, MATRIX]
+forward_model.restype = MATRIX
+
+load_classification_data = lib.load_classification_data
+load_classification_data.argtypes = [c_char_p, c_char_p, c_int]
+load_classification_data.restype = DATA
+
+make_layer = lib.make_layer
+make_layer.argtypes = [c_int, c_int, c_int]
+make_layer.restype = LAYER
+
+def make_model(layers):
+    m = MODEL()
+    m.n = len(layers)
+    m.layers = (LAYER*m.n) (*layers)
+    return m
+'''
 if __name__ == "__main__":
     im = load_image("data/dog.jpg")
     save_image(im, "hey")
