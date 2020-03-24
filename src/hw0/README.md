@@ -76,7 +76,7 @@ Your first task is to fill out these two functions in `process_image.c`:
 
 We will use the `clamp` padding strategy. This means that if the programmer asks for a pixel at column -3, use column 0, or if they ask for column 300 and the image is only 256x256 you will use column 255 (because of zero-based indexing).
 
-We can test out our pixel-setting code on the dog image by removing all of the red channel. See line 3-8 in `tryhw0.py`::
+We can test out our pixel-setting code on the dog image by removing all of the red channel. See line 3-8 in `tryhw0.py`:
 
     # 1. Getting and setting pixels
     im = load_image("data/dog.jpg")
@@ -138,7 +138,7 @@ Fill in the code for `void shift_image(image im, int c, float v)`. It should add
     shift_image(im, 2, .4)
     save_image(im, "overflow")
 
-But wait, when we look at the resulting image `shift_result.jpg` we see something bad has happened! The light areas of the image went above 1 and when we saved the image back to disk it overflowed and made weird patterns:
+But wait, when we look at the resulting image `overflow.jpg` we see something bad has happened! The light areas of the image went above 1 and when we saved the image back to disk it overflowed and made weird patterns:
 
 ![Overflow](../../figs/overflow.jpg)
 
