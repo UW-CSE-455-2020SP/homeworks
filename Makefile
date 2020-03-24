@@ -2,10 +2,10 @@ OPENCV=0
 OPENMP=0
 DEBUG=0
 
-OBJ=load_image.o process_image.o args.o test.o resize_image.o filter_image.o
+OBJ=load_image.o process_image.o args.o test.o
 EXOBJ=main.o
 
-VPATH=./src/:./:./src/hw0:./src/hw1:./src/hw2
+VPATH=./src/:./:./src/hw0
 SLIB=visionlib.so
 ALIB=visionlib.a
 EXEC=main
