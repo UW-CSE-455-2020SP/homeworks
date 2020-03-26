@@ -19,8 +19,8 @@ To get started, open up the README for homework 0 in src/hw0/README.md, or view 
 In MacOS, make sure you have the latest version of Xcode and perform `xcode-select --install`. 
 If `make` still results in an error, try [this](https://github.com/frida/frida/issues/338#issuecomment-426777849) solution.
 
-## Instructions for Windows Users [Not Recommended]
-We do not recommend using Windows OS for this assignment because C++ compilation is more complex under the Windows environment. However, if you only have Windows computers available, you can still manage your Python packages, C++ compiler, and Makefile with Anaconda.
+## Instructions for Windows Users
+We do **NOT** recommend using Windows OS for this assignment because C++ compilation is more complex under the Windows environment. However, if you only have Windows computers available, you can still manage your Python packages, C++ compiler, and Makefile with Anaconda.
 
 Installation Steps:
 1. Download [Anaconda](https://www.anaconda.com/distribution/) with Python 3.6+
