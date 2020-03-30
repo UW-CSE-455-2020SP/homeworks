@@ -26,14 +26,14 @@ You can also try running the example python code to generate some images:
 
 ### Image basics ###
 
-We have a data structure to store images in our library. The `image` struct stores the image metadata like width (w), height (h), and number of channels (c). It also contains the image stored as a floating point array (data). The data values are between 0 and 1. You can check it out in `src/image.h`, it looks like this:
+We have a data structure to store images in our library. The `image` struct stores the image metadata like width (w), height (h), and number of channels (c). It also contains the image pixel values stored as a floating point array (data). The data values are between 0 and 1. You can check it out in `src/image.h`, it looks like this:
 
     typedef struct{
         int h,w,c;
         float *data;
     } image;
 
-We have also provided some functions for loading and saving images. Use the function:
+Note, an image is a 3D array, but we'll linearize it into a 1D array here (refer to the lecture slides). In short, we save the values along the 1st row, then the 2nd row and so on for the 1st channel, then do the same for the 2nd channel and so on. We have also provided some functions for loading and saving images in `load_image.c`. Use the function:
 
     image im = load_image("image.jpg");
 
