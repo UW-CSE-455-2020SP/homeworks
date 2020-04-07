@@ -14,7 +14,7 @@ and check to see that everything compiles correctly. We recommend using Linux or
 
 ## Get started on HW0
 
-Open up the README for homework 0 in src/hw0/README.md, or view it [here](src/hw0/README.md)**. Good luck and have fun!
+Open up the README for homework 0 in src/hw0/README.md, or view it [here](src/hw0/README.md). Good luck and have fun!
 
 ## Instructions for Mac Users
 In MacOS, make sure you have the latest version of Xcode and perform `xcode-select --install`. 
