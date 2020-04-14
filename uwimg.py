@@ -54,7 +54,6 @@ class MODEL(Structure):
 
 (LINEAR, LOGISTIC, RELU, LRELU, SOFTMAX) = range(5)
 
-
 make_image = lib.make_image
 make_image.argtypes = [c_int, c_int, c_int]
 make_image.restype = IMAGE
@@ -118,6 +117,18 @@ def save_image(im, f):
 same_image = lib.same_image
 same_image.argtypes = [IMAGE, IMAGE]
 same_image.restype = c_int
+
+nn_resize = lib.nn_resize
+nn_resize.argtypes = [IMAGE, c_int, c_int]
+nn_resize.restype = IMAGE
+
+bilinear_resize = lib.bilinear_resize
+bilinear_resize.argtypes = [IMAGE, c_int, c_int]
+bilinear_resize.restype = IMAGE
+
+make_box_filter = lib.make_box_filter
+make_box_filter.argtypes = [c_int]
+make_box_filter.restype = IMAGE
 
 if __name__ == "__main__":
     im = load_image("data/dog.jpg")
