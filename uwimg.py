@@ -166,6 +166,10 @@ sobel_image = lib.sobel_image
 sobel_image.argtypes = [IMAGE]
 sobel_image.restype = POINTER(IMAGE)
 
+normalize_image = lib.normalize_image
+normalize_image.argtypes = [IMAGE]
+normalize_image.restype = None
+
 make_gaussian_filter = lib.make_gaussian_filter
 make_gaussian_filter.argtypes = [c_float]
 make_gaussian_filter.restype = IMAGE
@@ -173,7 +177,6 @@ make_gaussian_filter.restype = IMAGE
 convolve_image = lib.convolve_image
 convolve_image.argtypes = [IMAGE, IMAGE, c_int]
 convolve_image.restype = IMAGE
-
 
 apply_median_filter = lib.apply_median_filter
 apply_median_filter.argtypes = [IMAGE, c_int]
