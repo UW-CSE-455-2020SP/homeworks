@@ -162,10 +162,6 @@ make_gx_filter = lib.make_gx_filter
 make_gx_filter.argtypes = []
 make_gx_filter.restype = IMAGE
 
-feature_normalize = lib.feature_normalize
-feature_normalize.argtypes = [IMAGE]
-feature_normalize.restype = None
-
 sobel_image = lib.sobel_image
 sobel_image.argtypes = [IMAGE]
 sobel_image.restype = POINTER(IMAGE)
