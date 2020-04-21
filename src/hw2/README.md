@@ -1,22 +1,25 @@
-## Homework 2 ##
+# CSE 455 Homework 2 #
 
 This homework is 2x longer than the previous homework. So, start early!
 
 If we want to perform the large shrinking operations that we talked about in the last homework we need to first smooth our image. We'll start out by filtering the image with a box filter. There are very fast ways of performing this operation but instead, we'll do the naive thing and implement it as a convolution because it will generalize to other filters as well!
 
-To start, you may need to `git pull` the latest changes from GitHub to make sure your code is up to date. Then make sure to `make` (or even better, `make clean` and then `make`) so that your code is recompiled. You can run `./uwimg test hw2` to test your progress as you work.
+First run the following:
 
+```
+git pull
+make clean
+make
+```
 
-Use the `make` command to compile your code and `./main test hw2` to run. You can also test your code in Python with command `python tryhw2.py`.
-
+Then run `./main test hw2`. For python tests use `python tryhw2.py`. 
 
 ### 2.0: Cut and Paste two functions from previous homework  ####
 
 #### TO DO ####
-Note that you wrote two functions (i.e. `l1_normalize` and `make_box_filter`) in  homework 1, which will be useful for this assignment. Simply copy your solution from your previous submission
-to the `filter_image.c` file. If you get compiler (linker) error similar to "multiple definition of `make_box_filter` (or `l1_normalize`)", you should remove these two functions from your homework 1 code.
+Note that you wrote two functions (i.e. `l1_normalize` and `make_box_filter`) in  homework 1, which will be useful for this assignment. Simply **CUT** your solution from your previous submission to the `filter_image.c` file and paste in the current file to avoid getting compiler (linker) error similar to "multiple definition of `make_box_filter` (or `l1_normalize`)".
 
-We did not grade these two functions for correctness in the previous homework, and make sure you submitted these two functions again this time.
+We did not grade these two functions for correctness in the previous homework, so make sure you submit these two functions again this time.
 
 ### 2.1 Write a convolution function ###
 
@@ -27,7 +30,7 @@ Now it's time to fill in `image convolve_image(image im, image filter, int prese
 - If `preserve` is set to 1 we should produce an image with the same number of channels as the input. This is useful if, for example, we want to run a box filter over an RGB image and get out an RGB image. This means each channel in the image will be filtered by the corresponding channel in the filter. UNLESS:
 - If the `filter` only has one channel but `im` has multiple channels we want to apply the filter to each of those channels. Then we either sum between channels or not depending on if `preserve` is set.
 
-Also, `filter` better have either the same number of channels as `im` or have 1 channel. I check this with an `assert`.
+Also, `filter` should have either the same number of channels as `im` or have 1 channel. This is checked with an `assert`.
 
 For your information, we use "clamp" padding for the borders, which you can easily engineer with the "get_pixel" function in homework 0.
 
@@ -49,7 +52,6 @@ We'll get some output that looks like this:
 
 Now we can use this to perform our thumbnail operation:
 
-    from uwimg import *
     im = load_image("data/dog.jpg")
     f = make_box_filter(7)
     blur = convolve_image(im, f, 1)
@@ -66,9 +68,7 @@ Resize                     |  Blur and Resize
 
 ### 2.2 Make some more filters and try them out! ###
 
-
 #### TO DO ####
-
 Fill in the functions `image make_highpass_filter()`, `image make_sharpen_filter()`, and `image make_emboss_filter()` to return the example kernels we covered in class. Try them out on some images! After you have, answer Question 2.2.1 and 2.2.2 in the source file (put your answer just right there)
 
 Highpass                   |  Sharpen                  | Emboss
@@ -77,24 +77,21 @@ Highpass                   |  Sharpen                  | Emboss
 
 ### 2.3 Implement a Gaussian kernel ###
 
-
 #### TO DO ####
+Implement `image make_gaussian_filter(float sigma)` which will take a standard deviation value and return a filter that smooths using a Gaussian with that sigma. How big should the filter be? 99% of the probability mass for a Gaussian is within +/- 3 standard deviations so make the kernel be 6 times the size of sigma. But also we want an odd number, so make it be the next highest odd integer from 6x sigma. For instance, if sigma is 0.6, then the size of the Gaussian filter is 5 x 5; if sigma is 2, then the size of Gaussian filter is 13 x 13.
 
-Implement `image make_gaussian_filter(float sigma)` which will take a standard deviation value and return a filter that smooths using a Gaussian with that sigma. How big should the filter be, you ask? 99% of the probability mass for a Gaussian is within +/- 3 standard deviations so make the kernel be 6 times the size of sigma. But also we want an odd number, so make it be the next highest odd integer from 6x sigma. For instance, if sigma is 0.6, then the size of the Gaussian filter is 5 x 5; if sigma is 2, then the size of Gaussian filter is 13 x 13.
-
-We need to fill in our kernel with some values. Use the probability density function for a 2d Gaussian:
+We need to fill in our kernel with some values. Use the probability density function for a 2D Gaussian:
 
 ![2d gaussian](../../figs/2dgauss.png)
 
-Technically this isn't perfect, what we would really want to do is integrate over the area covered by each cell in the filter. But that's much more complicated and this is a decent estimate. Remember though, this is a blurring filter so we want all the weights to sum to 1. If only we had a function for that....
+Technically this isn't perfect, what we would really want to do is integrate over the area covered by each cell in the filter. But that's much more complicated and this is a decent estimate. Remember though, this is a blurring filter so we want all the weights to sum to 1. Now you should be able to try out your new blurring function:
 
-Now you should be able to try out your new blurring function! It should have much less noise than the box filter:
-
-    from uwimg import *
     im = load_image("data/dog.jpg")
     f = make_gaussian_filter(2)
     blur = convolve_image(im, f, 1)
     save_image(blur, "dog-gauss2")
+
+It should have much less noise than the box filter!
 
 ![blurred dog](../../figs/dog-gauss2.png)
 
@@ -104,16 +101,13 @@ Gaussian filters are cool because they are a true low-pass filter for the image.
 
 Using this frequency separation we can do some pretty neat stuff. For example, check out [this tutorial on retouching skin](https://petapixel.com/2015/07/08/primer-using-frequency-separation-in-photoshop-for-skin-retouching/) in Photoshop (but only if you want to).
 
-We can also make [really trippy images](http://cvcl.mit.edu/hybrid/OlivaTorralb_Hybrid_Siggraph06.pdf) that look different depending on if you are close or far away from them. That's what we'll be doing. They are hybrid images that take low frequency information from one image and high frequency info from another. Here's a picture of.... what exactly?
+We can also make [really trippy images](http://cvcl.mit.edu/hybrid/OlivaTorralb_Hybrid_Siggraph06.pdf) that look different depending on if you are close or far away from them. That's what we'll be doing. They are hybrid images that take low frequency information from one image and high frequency info from another. Here's an example:
 
 Small                     |  Medium | Large
 :-------------------------:|:-------:|:------------------:
 ![](../../figs/marilyn-einstein-small.png)   | ![](../../figs/marilyn-einstein-medium.png) | ![](../../figs/marilyn-einstein.png)
 
-If you don't believe my resizing check out `figs/marilyn-einstein.png` and view it from far away and up close. Sorta neat, right?
-
-Your job is to produce a similar image. But instead of famous dead people we'll be using famous fictional people! In particular, we'll be exposing the secret (but totally canon) sub-plot of the Harry Potter franchise that Dumbledore is a time-traveling Ron Weasely. Don't trust me?? The images don't lie! Wake up sheeple!
-
+Check out `figs/marilyn-einstein.png` and view it from far away and up close. Your job is to produce a similar image. But instead of famous dead people we'll be using famous fictional people from the Harry Potter franchise! Like this:
 
 Small                     | Large
 :-------------------------:|:------------------:
@@ -121,13 +115,9 @@ Small                     | Large
 
 For this task you'll have to extract the high frequency and low frequency from some images. You already know how to get low frequency, using your Gaussian filter. To get high frequency you just subtract the low frequency data from the original image.
 
-
 #### TO DO ####
+Fill in `image add_image(image a, image b)` and `image sub_image(image a, image b)` so we can perform our transformations of `+` and `-`. They should include some checks that the images are the same size. Now we should be able to run something like this:
 
-
-Fill in `image add_image(image a, image b)` and `image sub_image(image a, image b)` so we can perform our transformations. They should probably include some checks that the images are the same size and such. Now we should be able to run something like this:
-
-    from uwimg import *
     im = load_image("data/dog.jpg")
     f = make_gaussian_filter(2)
     lfreq = convolve_image(im, f, 1)
@@ -144,7 +134,7 @@ Low frequency           |  High frequency | Reconstruction
 :-------------------------:|:-------:|:------------------:
 ![](../../figs/low-frequency.png)   | ![](../../figs/high-frequency.png) | ![](../../figs/reconstruct.png)
 
-Note, the high-frequency image overflows when we save it to disk? Is this a problem for us? Why or why not?
+Note, the high-frequency image overflows when we save it to disk. Is this a problem for us? Why or why not?
 
 Use these functions to recreate your own Ronbledore image. You will need to tune your standard deviations for the Gaussians you use. You will probably need different values for each image to get it to look good.
 
@@ -154,9 +144,7 @@ The [Sobel filter](https://www.researchgate.net/publication/239398674_An_Isotrop
 
 ### 2.5.1 Make the filters ###
 
-
 #### TO DO ####
-
 First implement the functions `image make_gx_filter()` and `image make_gy_filter()` to make our sobel filters. They are for estimating the gradient in the x and y direction:
 
 Gx                 |  Gy 
@@ -166,12 +154,9 @@ Gx                 |  Gy
 
 ### 2.5.2 Calculate gradient magnitude and direction ###
 
-
 #### TO DO ####
-
 Fill in the function `image *sobel_image(image im)`. It should return two images, the gradient magnitude and direction. The strategy can be found [here](https://en.wikipedia.org/wiki/Sobel_operator#Formulation). We can visualize our magnitude using our normalization function:
 
-    from uwimg import *
     im = load_image("data/dog.jpg")
     res = sobel_image(im)
     mag = res[0]
@@ -184,20 +169,18 @@ Which results in:
 
 Note that our Python code only visualize `res[0]` (the magnitude) for convenience. The direction can also be visualized by drawing arrows on the image, which requires a more complex implementation, and we leave this step as a optional practice for you.
 
-
 ## 2.6 [Extra Credit] Median Filter ##
 
 Now, we want to apply a non-linear filter, [Median Filter](https://en.wikipedia.org/wiki/Median_filter), to an image. Median filter is a great tool to solve the salt and pepper noises.   
 
-Fill in the function  `image apply_median_filter(image im, int k)`. We assume a median filter is a square, with the same height and width. The kernel size is always a positive odd number. We use "clamp" padding for borders and corners. The output image should have the same width, height, and channels as the input image. You should apply median filter to each channel of the input image `im`.
-
+Fill in the function `image apply_median_filter(image im, int k)`. We assume a median filter is a square, with the same height and width. The kernel size is always a positive odd number. We use "clamp" padding for borders and corners. The output image should have the same width, height, and channels as the input image. You should apply median filter to each channel of the input image `im`.
 
 Input Noisy Image                 |  Output Image 
 :-----------------:|:------------------:
 ![](../../figs/salt_petter_building.jpg)   |  ![](../../figs/building-median.png)
 
 
-You can also try your implementation with the Python code below
+You can also try your implementation with the Python code below:
 ```
 im = load_image("figs/salt_petter_building.jpg")
 med = apply_median_filter(im, 3)
@@ -206,5 +189,4 @@ save_image(med, "building-median")
 
 ## Turn it in ##
 
-Turn in your `filter_image.c` on canvas under Assignment 2.
-
+Turn in your `filter_image.c` on canvas under Homework 2.
