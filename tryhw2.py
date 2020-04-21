@@ -27,6 +27,7 @@ save_image(reconstruct, "reconstruct")
 im = load_image("data/dog.jpg")
 res = sobel_image(im)
 mag = res[0]
+normalize_image(mag)
 save_image(mag, "magnitude")
 
 # EXTRA CREDIT
