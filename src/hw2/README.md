@@ -175,6 +175,9 @@ Now, we want to apply a non-linear filter, [Median Filter](https://en.wikipedia.
 
 Fill in the function `image apply_median_filter(image im, int k)`. We assume a median filter is a square, with the same height and width. The kernel size is always a positive odd number. We use "clamp" padding for borders and corners. The output image should have the same width, height, and channels as the input image. You should apply median filter to each channel of the input image `im`.
 
+If you want to test your median filter function, uncomment the `test_median_filter();` line in `test.c` file.
+
+
 Input Noisy Image                 |  Output Image 
 :-----------------:|:------------------:
 ![](../../figs/salt_petter_building.jpg)   |  ![](../../figs/building-median.png)

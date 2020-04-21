@@ -495,6 +495,6 @@ void test_hw2()
     test_hybrid_image();
     test_frequency_image();
     test_sobel();
-    test_median_filter();
+    // test_median_filter(); // uncomment this line if you want to test your extra credit code.
     printf("%d tests, %d passed, %d failed\n", tests_total, tests_total-tests_fail, tests_fail);
 }
