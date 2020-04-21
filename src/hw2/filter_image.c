@@ -161,8 +161,29 @@ image *sobel_image(image im)
 }
 
 
+void normalize_image(image im)
+{
+    /***********************************************************************
+    Calculate minimum and maximum pixel values. Normalize the image by
+    subtracting the minimum and dividing by the max-min difference.
+    This is a helper function to visualize the sobel magnitude image better.
+    No TODO here :)
+    ***********************************************************************/
+    int i;
+    float min = im.data[0];
+    float max = im.data[0];
+    for(i = 0; i < im.w*im.h*im.c; ++i){
+        if(im.data[i] > max) max = im.data[i];
+        if(im.data[i] < min) min = im.data[i];
+    }
+    for(i = 0; i < im.w*im.h*im.c; ++i){
+        im.data[i] = (im.data[i] - min)/(max-min);
+    }
+}
+
+
 // EXTRA CREDITS BELOW
-int compare_float (const void * a, const void * b)
+int compare_float(const void * a, const void * b)
 {
     // This function is provided for your convenience
     float fa = *(const float*) a;
@@ -174,7 +195,7 @@ image apply_median_filter(image im, int kernel_size)
 {
     image out = make_image(im.w, im.h, im.c);
 
-    // TODO
+    // TODO (EXTRA CREDIT)
     /***********************************************************************
     im is the input image.
     kernel_size is a positive odd number.
@@ -185,9 +206,8 @@ image apply_median_filter(image im, int kernel_size)
     height, and channels as the input image. You should apply median filter
     to each channel of the input image `im`.
 
-    Hint: use the qsort() function to sort an array
+    Hint: use the qsort() function to sort an array. Make use of compare_float() as needed.
     ************************************************************************/
 
     return out;
 }
-
