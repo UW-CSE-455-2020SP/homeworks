@@ -52,7 +52,6 @@ We'll get some output that looks like this:
 
 Now we can use this to perform our thumbnail operation:
 
-    from uwimg import *
     im = load_image("data/dog.jpg")
     f = make_box_filter(7)
     blur = convolve_image(im, f, 1)
@@ -94,7 +93,7 @@ Technically this isn't perfect, what we would really want to do is integrate ove
 
 It should have much less noise than the box filter!
 
-[blurred dog](../../figs/dog-gauss2.png)
+![blurred dog](../../figs/dog-gauss2.png)
 
 ## 2.4 Hybrid images ##
 
