@@ -294,3 +294,207 @@ void test_hw1()
     test_multiple_resize();
     printf("%d tests, %d passed, %d failed\n", tests_total, tests_total-tests_fail, tests_fail);
 }
+
+// HOMEWORK 2
+
+void test_highpass_filter(){
+    image im = load_image("data/dog.jpg");
+    image f = make_highpass_filter();
+    image blur = convolve_image(im, f, 0);
+    clamp_image(blur);
+
+    
+    image gt = load_image("figs/dog-highpass.png");
+    TEST(same_image(blur, gt, EPS));
+    free_image(im);
+    free_image(f);
+    free_image(blur);
+    free_image(gt);
+}
+
+void test_emboss_filter(){
+    image im = load_image("data/dog.jpg");
+    image f = make_emboss_filter();
+    image blur = convolve_image(im, f, 1);
+    clamp_image(blur);
+
+    
+    image gt = load_image("figs/dog-emboss.png");
+    TEST(same_image(blur, gt, EPS));
+    free_image(im);
+    free_image(f);
+    free_image(blur);
+    free_image(gt);
+}
+
+void test_sharpen_filter(){
+    image im = load_image("data/dog.jpg");
+    image f = make_sharpen_filter();
+    image blur = convolve_image(im, f, 1);
+    clamp_image(blur);
+
+
+    image gt = load_image("figs/dog-sharpen.png");
+    TEST(same_image(blur, gt, EPS));
+    free_image(im);
+    free_image(f);
+    free_image(blur);
+    free_image(gt);
+}
+
+void test_convolution(){
+    image im = load_image("data/dog.jpg");
+    image f = make_box_filter(7);
+    image blur = convolve_image(im, f, 1);
+    clamp_image(blur);
+
+    image gt = load_image("figs/dog-box7.png");
+    TEST(same_image(blur, gt, EPS));
+    free_image(im);
+    free_image(f);
+    free_image(blur);
+    free_image(gt);
+}
+
+void test_gaussian_filter(){
+    image f = make_gaussian_filter(7);
+    int i;
+
+    for(i = 0; i < f.w * f.h * f.c; i++){
+        f.data[i] *= 100;
+    }
+
+    image gt = load_image("figs/gaussian_filter_7.png");
+    TEST(same_image(f, gt, EPS));
+    free_image(f);
+    free_image(gt);
+}
+
+void test_gaussian_blur(){
+    image im = load_image("data/dog.jpg");
+    image f = make_gaussian_filter(2);
+    image blur = convolve_image(im, f, 1);
+    clamp_image(blur);
+
+    image gt = load_image("figs/dog-gauss2.png");
+    TEST(same_image(blur, gt, EPS));
+    free_image(im);
+    free_image(f);
+    free_image(blur);
+    free_image(gt);
+}
+
+void test_hybrid_image(){
+    image melisa = load_image("data/melisa.png");
+    image aria = load_image("data/aria.png");
+    image f = make_gaussian_filter(2);
+    image lfreq_m = convolve_image(melisa, f, 1);
+    image lfreq_a = convolve_image(aria, f, 1);
+    image hfreq_a = sub_image(aria , lfreq_a);
+    image reconstruct = add_image(lfreq_m , hfreq_a);
+    image gt = load_image("figs/hybrid.png");
+    clamp_image(reconstruct);
+    TEST(same_image(reconstruct, gt, EPS));
+    free_image(melisa);
+    free_image(aria);
+    free_image(f);
+    free_image(lfreq_m);
+    free_image(lfreq_a);
+    free_image(hfreq_a);
+    free_image(reconstruct);
+    free_image(gt);
+}
+
+void test_frequency_image(){
+    image im = load_image("data/dog.jpg");
+    image f = make_gaussian_filter(2);
+    image lfreq = convolve_image(im, f, 1);
+    image hfreq = sub_image(im, lfreq);
+    image reconstruct = add_image(lfreq , hfreq);
+
+    image low_freq = load_image("figs/low-frequency.png");
+    image high_freq = load_image("figs/high-frequency-clamp.png");
+
+    clamp_image(lfreq);
+    clamp_image(hfreq);
+    TEST(same_image(lfreq, low_freq, EPS));
+    TEST(same_image(hfreq, high_freq, EPS));
+    TEST(same_image(reconstruct, im, EPS));
+    free_image(im);
+    free_image(f);
+    free_image(lfreq);
+    free_image(hfreq);
+    free_image(reconstruct);
+    free_image(low_freq);
+    free_image(high_freq);
+}
+
+void test_sobel(){
+    image im = load_image("data/dog.jpg");
+    image *res = sobel_image(im);
+    image mag = res[0];
+    image theta = res[1];
+    feature_normalize2(mag);
+    feature_normalize2(theta);
+
+    image gt_mag = load_image("figs/magnitude.png");
+    image gt_theta = load_image("figs/theta.png");
+    TEST(gt_mag.w == mag.w && gt_theta.w == theta.w);
+    TEST(gt_mag.h == mag.h && gt_theta.h == theta.h);
+    TEST(gt_mag.c == mag.c && gt_theta.c == theta.c);
+    if( gt_mag.w != mag.w || gt_theta.w != theta.w || 
+        gt_mag.h != mag.h || gt_theta.h != theta.h || 
+        gt_mag.c != mag.c || gt_theta.c != theta.c ) return;
+    int i;
+    for(i = 0; i < gt_mag.w*gt_mag.h; ++i){
+        if(within_eps(gt_mag.data[i], 0, EPS)){
+            gt_theta.data[i] = 0;
+            theta.data[i] = 0;
+        }
+        if(within_eps(gt_theta.data[i], 0, EPS) || within_eps(gt_theta.data[i], 1, EPS)){
+            gt_theta.data[i] = 0;
+            theta.data[i] = 0;
+        }
+    }
+
+    TEST(same_image(mag, gt_mag, EPS));
+    TEST(same_image(theta, gt_theta, EPS));
+    free_image(im);
+    free_image(mag);
+    free_image(theta);
+    free_image(gt_mag);
+    free_image(gt_theta);
+    free(res);
+}
+
+
+void test_median_filter(){
+    image im = load_image("figs/salt_petter_building.jpg");
+    image res = apply_median_filter(im, 3);
+    
+    image gt_median = load_image("figs/building-median.png");
+
+    TEST(gt_median.w == res.w &&  gt_median.h == res.h  && gt_median.c == res.c);
+
+    TEST(same_image(res, gt_median, EPS));
+
+    free_image(im);
+    free_image(res);
+    free_image(gt_median);
+}
+
+
+void test_hw2()
+{
+    test_gaussian_filter();
+    test_sharpen_filter();
+    test_emboss_filter();
+    test_highpass_filter();
+    test_convolution();
+    test_gaussian_blur();
+    test_hybrid_image();
+    test_frequency_image();
+    test_sobel();
+    test_median_filter();
+    printf("%d tests, %d passed, %d failed\n", tests_total, tests_total-tests_fail, tests_fail);
+}

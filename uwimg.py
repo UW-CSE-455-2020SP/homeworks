@@ -118,6 +118,8 @@ same_image = lib.same_image
 same_image.argtypes = [IMAGE, IMAGE]
 same_image.restype = c_int
 
+##### HOMEWORK 1
+
 nn_resize = lib.nn_resize
 nn_resize.argtypes = [IMAGE, c_int, c_int]
 nn_resize.restype = IMAGE
@@ -129,6 +131,57 @@ bilinear_resize.restype = IMAGE
 make_box_filter = lib.make_box_filter
 make_box_filter.argtypes = [c_int]
 make_box_filter.restype = IMAGE
+
+##### HOMEWORK 2
+
+make_highpass_filter = lib.make_highpass_filter
+make_highpass_filter.argtypes = []
+make_highpass_filter.restype = IMAGE
+
+make_emboss_filter = lib.make_emboss_filter
+make_emboss_filter.argtypes = []
+make_emboss_filter.restype = IMAGE
+
+make_sharpen_filter = lib.make_sharpen_filter
+make_sharpen_filter.argtypes = []
+make_sharpen_filter.restype = IMAGE
+
+add_image = lib.add_image
+add_image.argtypes = [IMAGE, IMAGE]
+add_image.restype = IMAGE
+
+sub_image = lib.sub_image
+sub_image.argtypes = [IMAGE, IMAGE]
+sub_image.restype = IMAGE
+
+make_gy_filter = lib.make_gy_filter
+make_gy_filter.argtypes = []
+make_gy_filter.restype = IMAGE
+
+make_gx_filter = lib.make_gx_filter
+make_gx_filter.argtypes = []
+make_gx_filter.restype = IMAGE
+
+feature_normalize = lib.feature_normalize
+feature_normalize.argtypes = [IMAGE]
+feature_normalize.restype = None
+
+sobel_image = lib.sobel_image
+sobel_image.argtypes = [IMAGE]
+sobel_image.restype = POINTER(IMAGE)
+
+make_gaussian_filter = lib.make_gaussian_filter
+make_gaussian_filter.argtypes = [c_float]
+make_gaussian_filter.restype = IMAGE
+
+convolve_image = lib.convolve_image
+convolve_image.argtypes = [IMAGE, IMAGE, c_int]
+convolve_image.restype = IMAGE
+
+
+apply_median_filter = lib.apply_median_filter
+apply_median_filter.argtypes = [IMAGE, c_int]
+apply_median_filter.restype = IMAGE
 
 if __name__ == "__main__":
     im = load_image("data/dog.jpg")

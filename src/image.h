@@ -91,6 +91,8 @@ void threshold_image(image im, float thresh);
 image *sobel_image(image im);
 image colorize_sobel(image im);
 image smooth_image(image im, float sigma);
+image apply_median_filter(image im, int kernel_size);
+
 
 // Harris and Stitching
 point make_point(float x, float y);
