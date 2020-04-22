@@ -94,7 +94,7 @@ image make_gaussian_filter(float sigma)
     // TODO
     /***********************************************************************
     sigma: a float number for the Gaussian.
-    
+
     Create a Gaussian filter with the given sigma. Note that the kernel size 
     is the next highest odd integer from 6x sigma.
 
@@ -156,6 +156,10 @@ image *sobel_image(image im)
     by calling rst[1]
     ************************************************************************/
     image *rst = calloc(2, sizeof(image));
+
+
+    rst[0] = make_image(im.w, im.h, 1);
+    rst[1] = make_image(im.w, im.h, 1);
 
     return rst;
 }
