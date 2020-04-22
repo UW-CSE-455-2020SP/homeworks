@@ -147,7 +147,9 @@ image *sobel_image(image im)
 {
     // TODO
     /***********************************************************************
-    im is the input image with "h x w x 3" or "h x w x 1".
+    im: the input image is either a "h x w x 3" RGB image or "h x w x 1" grayscale 
+    image.
+    
     Apply Sobel filter to the given image, get the magnitude and gradient, 
     and return the result. 
 
