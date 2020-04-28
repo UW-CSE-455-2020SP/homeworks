@@ -31,7 +31,7 @@ This homework covers finding interest points in an image, describing those inter
         return combine;
     }
 
-So we'll find the corner points in an image using a Harris corner detector. Then we'll match together the descriptors of those corners. We'll use RANSAC to estimate a homography from one image to the other. Finally, we'll stitch together the images using this homography.
+So we'll find the corner points in an image using a Harris corner detector. Then we'll match together the descriptors of those corners. We'll use RANSAC to estimate a homography from one image to the other. Finally, we'll stitch together the images using this homography. **Note**: We don't have any tests to check the correctness of most of the functions, we will check them manually.
 
 ## 1. Harris corner detection ##
 
