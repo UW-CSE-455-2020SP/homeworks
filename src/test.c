@@ -531,10 +531,24 @@ void test_projection()
     free_matrix(H);
 }
 
+void test_panorama()
+{
+    image gt = load_image("figs/panorama.png");
+    image im1 = load_image("data/Rainier1.png");
+    image im2 = load_image("data/Rainier2.png");
+    image c = panorama_image(im1,im2,2,50,3,2,10000,30,0);
+    TEST(same_image(c, gt, EPS));
+    free_image(gt);
+    free_image(im1);
+    free_image(im2);
+    free_image(c);
+}
+
 void test_hw3()
 {
     test_structure();
     test_cornerness();
     test_projection();
+    test_panorama();
     printf("%d tests, %d passed, %d failed\n", tests_total, tests_total-tests_fail, tests_fail);
 }
