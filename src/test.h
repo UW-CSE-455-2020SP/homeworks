@@ -11,10 +11,9 @@ extern int tests_fail;
 void test_hw0();
 void test_hw1();
 void test_hw2();
-/*
 void test_hw3();
+/*
 void test_hw4();
 void test_hw5();
-void run_tests();
 */
 #endif

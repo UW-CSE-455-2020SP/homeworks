@@ -467,23 +467,6 @@ void test_sobel(){
     free(res);
 }
 
-
-void test_median_filter(){
-    image im = load_image("figs/salt_petter_building.jpg");
-    image res = apply_median_filter(im, 3);
-    
-    image gt_median = load_image("figs/building-median.png");
-
-    TEST(gt_median.w == res.w &&  gt_median.h == res.h  && gt_median.c == res.c);
-
-    TEST(same_image(res, gt_median, EPS));
-
-    free_image(im);
-    free_image(res);
-    free_image(gt_median);
-}
-
-
 void test_hw2()
 {
     test_gaussian_filter();
@@ -495,6 +478,63 @@ void test_hw2()
     test_hybrid_image();
     test_frequency_image();
     test_sobel();
-    // test_median_filter(); // uncomment this line if you want to test your extra credit code.
+    printf("%d tests, %d passed, %d failed\n", tests_total, tests_total-tests_fail, tests_fail);
+}
+
+
+// HOMEWORK 3
+
+void test_structure()
+{
+    image im = load_image("data/dogbw.png");
+    image s = structure_matrix(im, 2);
+    feature_normalize2(s);
+    image gt = load_image("figs/structure.png");
+    TEST(same_image(s, gt, EPS));
+    free_image(im);
+    free_image(s);
+    free_image(gt);
+}
+
+void test_cornerness()
+{
+    image im = load_image("data/dogbw.png");
+    image s = structure_matrix(im, 2);
+    image c = cornerness_response(s);
+    feature_normalize2(c);
+    image gt = load_image("figs/response.png");
+    TEST(same_image(c, gt, EPS));
+    free_image(im);
+    free_image(s);
+    free_image(c);
+    free_image(gt);
+}
+
+void test_projection()
+{
+    matrix H = make_translation_homography(12.4, -3.2);
+    TEST(same_point(project_point(H, make_point(0,0)), make_point(12.4, -3.2), EPS));
+    free_matrix(H);
+
+    H = make_identity_homography();
+    H.data[0][0] = 1.32;
+    H.data[0][1] = -1.12;
+    H.data[0][2] = 2.52;
+    H.data[1][0] = -.32;
+    H.data[1][1] = -1.2;
+    H.data[1][2] = .52;
+    H.data[2][0] = -3.32;
+    H.data[2][1] = 1.87;
+    H.data[2][2] = .112;
+    point p = project_point(H, make_point(3.14, 1.59));
+    TEST(same_point(p, make_point(-0.66544, 0.326017), EPS));
+    free_matrix(H);
+}
+
+void test_hw3()
+{
+    test_structure();
+    test_cornerness();
+    test_projection();
     printf("%d tests, %d passed, %d failed\n", tests_total, tests_total-tests_fail, tests_fail);
 }

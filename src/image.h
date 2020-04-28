@@ -85,7 +85,7 @@ image make_emboss_filter();
 image make_gaussian_filter(float sigma);
 image make_gx_filter();
 image make_gy_filter();
-void feature_normalize(image im);
+void normalize_image(image im);
 void l1_normalize(image im);
 void threshold_image(image im, float thresh);
 image *sobel_image(image im);
@@ -93,23 +93,28 @@ image colorize_sobel(image im);
 image smooth_image(image im, float sigma);
 image apply_median_filter(image im, int kernel_size);
 
-
 // Harris and Stitching
-point make_point(float x, float y);
-point project_point(matrix H, point p);
-matrix compute_homography(match *matches, int n);
 image structure_matrix(image im, float sigma);
 image cornerness_response(image S);
-void free_descriptors(descriptor *d, int n);
-image cylindrical_project(image im, float f);
-void mark_corners(image im, descriptor *d, int n);
-image find_and_draw_matches(image a, image b, float sigma, float thresh, int nms);
-void detect_and_draw_corners(image im, float sigma, float thresh, int nms);
+point make_point(float x, float y);
+descriptor make_descriptor(image im, int i);
+point project_point(matrix H, point p);
+matrix compute_homography(match *matches, int mn, int n);
 int model_inliers(matrix H, match *m, int n, float thresh);
 image combine_images(image a, image b, matrix H);
 match *match_descriptors(descriptor *a, int an, descriptor *b, int bn, int *mn);
 descriptor *harris_corner_detector(image im, float sigma, float thresh, int nms, int *n);
-image panorama_image(image a, image b, float sigma, float thresh, int nms, float inlier_thresh, int iters, int cutoff);
+image panorama_image(image a, image b, float sigma, float thresh, int nms, float inlier_thresh, int iters, int cutoff, int draw);
+void free_descriptors(descriptor *d, int n);
+image cylindrical_project(image im, float f);
+void mark_corners(image im, descriptor *d, int n);
+void find_and_mark_corners(image im, float sigma, float thresh, int nms);
+image mark_matches(image a, image b, match *matches, int n, int inliers);
+image find_and_mark_matches(image a, image b, float sigma, float thresh, int nms);
+matrix RANSAC(match *m, int n, float thresh, int k, int cutoff);
+int model_inliers(matrix H, match *m, int n, float thresh);
+image combine_images(image a, image b, matrix H);
+int match_compare(const void *a, const void *b);
 
 // Optical Flow
 image make_integral_image(image im);
