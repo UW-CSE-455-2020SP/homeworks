@@ -213,6 +213,7 @@ Computes homography between two images using "n" random matches from an array "m
 {
     matrix M = make_matrix(n*2, 8);
     matrix b = make_matrix(n*2, 1);
+	int index;
 
     for(int i = 0; i < n; ++i){
         // Select a random match and get the x,y coordinates
