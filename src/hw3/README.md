@@ -51,7 +51,7 @@ Fill in `image structure_matrix(image im, float sigma)`. This will perform the f
 
 ### 1.1.1 EXTRA CREDIT: Make a fast smoother ###
 
-If you want a fast corner detector you can decompose the Gaussian blur from one large 2D convolution to 2 1D convolutions. Instead of using an N x N filter you can convolve with a 1 x N filter followed by the same filter flipped to be N x 1.
+If you want a fast corner detector you can decompose the Gaussian blur from one large 2D convolution to 2 1D convolutions. Instead of using an N x N filter you can convolve with a 1 x N filter followed by the same filter flipped to be N x 1. **Note: Use the correct constant in front of the exponential, even if it doesn't matter since you normalize the filter.** This is because we are not just testing correctness of the code but also understanding of the concepts.
 
 #### TO DO ####
 Fill in `image make_1d_gaussian(float sigma)`. You may optionally change the 2-D Gaussian part in the `structure_matrix()` to 1-D to use this decomposed Gaussian smoothing.
