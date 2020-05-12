@@ -59,7 +59,7 @@ It may look something like:
 
 ![](../../figs/lines.png)
 
-## 4.4 Optical flow demo using OpenCV ##
+## 4. Optical flow demo using OpenCV ##
 
 Using OpenCV we can get images from the webcam and display the results in real-time. Try installing OpenCV and enabling OpenCV compilation in the Makefile (set `OPENCV=1` in the first line). Then run:
 
