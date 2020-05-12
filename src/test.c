@@ -80,7 +80,7 @@ int same_image(image a, image b, float eps)
     for(i = 0; i < a.w*a.h*a.c; ++i){
         float thresh = (fabs(b.data[i]) + fabs(a.data[i])) * eps / 2;
         if (thresh > eps) eps = thresh;
-        if(!within_eps(a.data[i], b.data[i], eps)) 
+        if(!within_eps(a.data[i], b.data[i], eps))
         {
             printf("The value should be %f, but it is %f! \n", b.data[i], a.data[i]);
             return 0;
@@ -107,15 +107,15 @@ void test_get_pixel(){
 void test_set_pixel(){
     image gt = load_image("data/dots.png");
     image d = make_image(4,2,3);
-    set_pixel(d, 0,0,0,0); set_pixel(d, 0,0,1,0); set_pixel(d, 0,0,2,0); 
-    set_pixel(d, 1,0,0,1); set_pixel(d, 1,0,1,1); set_pixel(d, 1,0,2,1); 
-    set_pixel(d, 2,0,0,1); set_pixel(d, 2,0,1,0); set_pixel(d, 2,0,2,0); 
-    set_pixel(d, 3,0,0,1); set_pixel(d, 3,0,1,1); set_pixel(d, 3,0,2,0); 
+    set_pixel(d, 0,0,0,0); set_pixel(d, 0,0,1,0); set_pixel(d, 0,0,2,0);
+    set_pixel(d, 1,0,0,1); set_pixel(d, 1,0,1,1); set_pixel(d, 1,0,2,1);
+    set_pixel(d, 2,0,0,1); set_pixel(d, 2,0,1,0); set_pixel(d, 2,0,2,0);
+    set_pixel(d, 3,0,0,1); set_pixel(d, 3,0,1,1); set_pixel(d, 3,0,2,0);
 
-    set_pixel(d, 0,1,0,0); set_pixel(d, 0,1,1,1); set_pixel(d, 0,1,2,0); 
-    set_pixel(d, 1,1,0,0); set_pixel(d, 1,1,1,1); set_pixel(d, 1,1,2,1); 
-    set_pixel(d, 2,1,0,0); set_pixel(d, 2,1,1,0); set_pixel(d, 2,1,2,1); 
-    set_pixel(d, 3,1,0,1); set_pixel(d, 3,1,1,0); set_pixel(d, 3,1,2,1); 
+    set_pixel(d, 0,1,0,0); set_pixel(d, 0,1,1,1); set_pixel(d, 0,1,2,0);
+    set_pixel(d, 1,1,0,0); set_pixel(d, 1,1,1,1); set_pixel(d, 1,1,2,1);
+    set_pixel(d, 2,1,0,0); set_pixel(d, 2,1,1,0); set_pixel(d, 2,1,2,1);
+    set_pixel(d, 3,1,0,1); set_pixel(d, 3,1,1,0); set_pixel(d, 3,1,2,1);
 
     // Test images are same
     TEST(same_image(d, gt, EPS));
@@ -303,7 +303,7 @@ void test_highpass_filter(){
     image blur = convolve_image(im, f, 0);
     clamp_image(blur);
 
-    
+
     image gt = load_image("figs/dog-highpass.png");
     TEST(same_image(blur, gt, EPS));
     free_image(im);
@@ -318,7 +318,7 @@ void test_emboss_filter(){
     image blur = convolve_image(im, f, 1);
     clamp_image(blur);
 
-    
+
     image gt = load_image("figs/dog-emboss.png");
     TEST(same_image(blur, gt, EPS));
     free_image(im);
@@ -442,8 +442,8 @@ void test_sobel(){
     TEST(gt_mag.w == mag.w && gt_theta.w == theta.w);
     TEST(gt_mag.h == mag.h && gt_theta.h == theta.h);
     TEST(gt_mag.c == mag.c && gt_theta.c == theta.c);
-    if( gt_mag.w != mag.w || gt_theta.w != theta.w || 
-        gt_mag.h != mag.h || gt_theta.h != theta.h || 
+    if( gt_mag.w != mag.w || gt_theta.w != theta.w ||
+        gt_mag.h != mag.h || gt_theta.h != theta.h ||
         gt_mag.c != mag.c || gt_theta.c != theta.c ) return;
     int i;
     for(i = 0; i < gt_mag.w*gt_mag.h; ++i){
@@ -550,5 +550,68 @@ void test_hw3()
     test_cornerness();
     test_projection();
     test_panorama();
+    printf("%d tests, %d passed, %d failed\n", tests_total, tests_total-tests_fail, tests_fail);
+}
+
+// HOMEWORK 4
+
+void test_integral_image()
+{
+    image dots = load_image("data/dots.png");
+    image intdot = make_integral_image(dots);
+    image intdot_t = load_image_binary("data/dotsintegral.bin");
+    TEST(same_image(intdot, intdot_t, EPS));
+
+    image dog = load_image("data/dogbw.png");
+    image intdog = make_integral_image(dog);
+    image intdog_t = load_image_binary("data/dogintegral.bin");
+    TEST(same_image(intdog, intdog_t, .6));
+}
+
+void test_exact_box_filter_image()
+{
+    image dog = load_image("data/dog.jpg");
+    image smooth = box_filter_image(dog, 15);
+    image smooth_t = load_image("data/dogbox.png");
+    //printf("avg origin difference test: %f\n", avg_diff(smooth, dog));
+    //printf("avg smooth difference test: %f\n", avg_diff(smooth, smooth_t));
+    TEST(same_image(smooth, smooth_t, EPS*2));
+}
+
+void test_good_enough_box_filter_image()
+{
+    image dog = load_image("data/dog.jpg");
+    image smooth = box_filter_image(dog, 15);
+    image smooth_c = center_crop(smooth);
+    image smooth_t = load_image("data/dogboxcenter.png");
+    //printf("avg origin difference test: %f\n", avg_diff(smooth_c, center_crop(dog)));
+    //printf("avg smooth difference test: %f\n", avg_diff(smooth_c, smooth_t));
+    TEST(same_image(smooth_c, smooth_t, EPS*2));
+}
+
+void test_structure_image()
+{
+    image doga = load_image("data/dog_a_small.jpg");
+    image dogb = load_image("data/dog_b_small.jpg");
+    image structure = time_structure_matrix(dogb, doga, 15);
+    image structure_t = load_image_binary("data/structure.bin");
+    TEST(same_image(center_crop(structure), center_crop(structure_t), EPS));
+}
+
+void test_velocity_image()
+{
+    image structure = load_image_binary("data/structure.bin");
+    image velocity = velocity_image(structure, 5);
+    image velocity_t = load_image_binary("data/velocity.bin");
+    TEST(same_image(velocity, velocity_t, EPS));
+}
+
+void test_hw4()
+{
+    test_integral_image();
+    test_exact_box_filter_image();
+    test_good_enough_box_filter_image();
+    test_structure_image();
+    test_velocity_image();
     printf("%d tests, %d passed, %d failed\n", tests_total, tests_total-tests_fail, tests_fail);
 }
