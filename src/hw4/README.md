@@ -13,6 +13,8 @@ Then `./main test hw4` and/or `python tryhw4.py`.
 The overall idea is that we’ll use Lucas-Kanade’s equation to find the optical flow. For the flow equations, we need spatial and temporal gradient information .
 We'll be calculating structure matrices again, so we need to do aggregated sums over regions of the image. In the end, we’ll calculate velocity from spatial and temporal gradient information and use that to draw the motion lines.
 
+Note that you must do zero-padding as your padding method in this homework. Since your `get_pixel()` was using clamp-padding, you may not want to use the `get_pixel` methods unless you do bounds checking so you don't run into trouble. You can either use `.data[]` to get the pixel value, or write a new function (e.g `get_pixel_zero()`) and use zero padding there. Please avoid changing your original `get_pixel()` since we use our own solution for your previous homework and if you change that function, we might no be able to compile your homework properly.
+
 ## 1. Integral images ##
 
 Optical flow has to run on video so it needs to be fast! We'll be calculating structure matrices again so we need to do aggregated sums over regions of the image. However, instead of smoothing with a Gaussian filter, we'll use [integral images](https://en.wikipedia.org/wiki/Summed-area_table) to simulate smoothing with a box filter.
