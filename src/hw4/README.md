@@ -24,7 +24,6 @@ Fill in `image make_integral_image(image im)` as described in the wikipedia arti
 
 We can use our integral image to quickly calculate the sum of regions of an image. Be careful, this is not the your old `make_box_filter()` from your other homework. It is using the integral image, and a smooth window size.
 
-
 #### TO DO ####
 Fill in `image box_filter_image(image im, int s)` so that every pixel in the output is the average of pixels in a given window size `s`. Note that you must call your `make_integral_image()` in this function.
 
@@ -59,7 +58,7 @@ It may look something like:
 
 ![](../../figs/lines.png)
 
-## 4. Optical flow demo using OpenCV ##
+## 4. EXTRA CREDIT: Optical flow demo using OpenCV ##
 
 Using OpenCV we can get images from the webcam and display the results in real-time. Try installing OpenCV and enabling OpenCV compilation in the Makefile (set `OPENCV=1` in the first line). Then run:
 
