@@ -68,4 +68,4 @@ Using OpenCV we can get images from the webcam and display the results in real-t
 
 ## Turn it in ##
 
-Turn in your `flow_image.c` on canvas under Homework 4.
+Turn in your `flow_image.c` on canvas under Homework 4. If you did the extra credit part, submit a screenshot of your result on webcam (in .jpg or .png format).
