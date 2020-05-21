@@ -61,6 +61,7 @@ void gradient_matrix(matrix m, ACTIVATION a, matrix d)
     TODO:
     For each element x in the matrix m:
     - If the activation is softmax or linear, then the gradient in d should not change.
+    - If the activation is LOGISTIC, d.data[i][j] should times x * (1.0 - x);
     - If the activation is RELU:
         if x <= 0, then the gradient in d is zero. 
         otherwise, the gradient should stay the same. 
