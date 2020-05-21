@@ -615,3 +615,177 @@ void test_hw4()
     test_velocity_image();
     printf("%d tests, %d passed, %d failed\n", tests_total, tests_total-tests_fail, tests_fail);
 }
+// HOMEWORK 5
+
+void test_activate_matrix()
+{
+    matrix a = load_matrix("data/test/a.matrix");
+    matrix truth_alog = load_matrix("data/test/alog.matrix");
+    matrix truth_arelu = load_matrix("data/test/arelu.matrix");
+    matrix truth_alrelu = load_matrix("data/test/alrelu.matrix");
+    matrix truth_asoft = load_matrix("data/test/asoft.matrix");
+    matrix alog = copy_matrix(a);
+    activate_matrix(alog, LOGISTIC);
+    matrix arelu = copy_matrix(a);
+    activate_matrix(arelu, RELU);
+    matrix alrelu = copy_matrix(a);
+    activate_matrix(alrelu, LRELU);
+    matrix asoft = copy_matrix(a);
+    activate_matrix(asoft, SOFTMAX);
+    TEST(same_matrix(truth_alog, alog));
+    TEST(same_matrix(truth_arelu, arelu));
+    TEST(same_matrix(truth_alrelu, alrelu));
+    TEST(same_matrix(truth_asoft, asoft));
+    free_matrix(a);
+    free_matrix(alog);
+    free_matrix(arelu);
+    free_matrix(alrelu);
+    free_matrix(asoft);
+    free_matrix(truth_alog);
+    free_matrix(truth_arelu);
+    free_matrix(truth_alrelu);
+    free_matrix(truth_asoft);
+}
+
+void test_gradient_matrix()
+{
+    matrix a = load_matrix("data/test/a.matrix");
+    matrix y = load_matrix("data/test/y.matrix");
+    matrix truth_glog = load_matrix("data/test/glog.matrix");
+    matrix truth_grelu = load_matrix("data/test/grelu.matrix");
+    matrix truth_glrelu = load_matrix("data/test/glrelu.matrix");
+    matrix truth_gsoft = load_matrix("data/test/gsoft.matrix");
+    matrix glog = copy_matrix(a);
+    matrix grelu = copy_matrix(a);
+    matrix glrelu = copy_matrix(a);
+    matrix gsoft = copy_matrix(a);
+    gradient_matrix(y, LOGISTIC, glog);
+    gradient_matrix(y, RELU, grelu);
+    gradient_matrix(y, LRELU, glrelu);
+    gradient_matrix(y, SOFTMAX, gsoft);
+    TEST(same_matrix(truth_glog, glog));
+    TEST(same_matrix(truth_grelu, grelu));
+    TEST(same_matrix(truth_glrelu, glrelu));
+    TEST(same_matrix(truth_gsoft, gsoft));
+    free_matrix(a);
+    free_matrix(glog);
+    free_matrix(grelu);
+    free_matrix(glrelu);
+    free_matrix(gsoft);
+    free_matrix(truth_glog);
+    free_matrix(truth_grelu);
+    free_matrix(truth_glrelu);
+    free_matrix(truth_gsoft);
+}
+
+void test_layer()
+{
+    matrix a = load_matrix("data/test/a.matrix");
+    matrix w = load_matrix("data/test/w.matrix");
+    matrix dw = load_matrix("data/test/dw.matrix");
+    matrix v = load_matrix("data/test/v.matrix");
+    matrix delta = load_matrix("data/test/delta.matrix");
+
+    matrix truth_dx = load_matrix("data/test/truth_dx.matrix");
+    matrix truth_v = load_matrix("data/test/truth_v.matrix");
+    matrix truth_dw = load_matrix("data/test/truth_dw.matrix");
+
+    matrix updated_dw = load_matrix("data/test/updated_dw.matrix");
+    matrix updated_w = load_matrix("data/test/updated_w.matrix");
+    matrix updated_v = load_matrix("data/test/updated_v.matrix");
+
+    matrix truth_out = load_matrix("data/test/out.matrix");
+    layer l = make_layer(64, 16, LRELU);
+    l.w = w;
+    l.dw = dw;
+    l.v = v;
+    matrix out = forward_layer(&l, a);
+    TEST(same_matrix(truth_out, out));
+
+    matrix dx = backward_layer(&l, delta);
+    TEST(same_matrix(truth_v, v));
+    TEST(same_matrix(truth_dw, l.dw));
+    TEST(same_matrix(truth_dx, dx));
+
+    update_layer(&l, .01, .9, .01);
+    TEST(same_matrix(updated_dw, l.dw));
+    TEST(same_matrix(updated_w, l.w));
+    TEST(same_matrix(updated_v, l.v));
+}
+
+void make_matrix_test()
+{
+    srand(1);
+    matrix a = random_matrix(32, 64, 10);
+    matrix w = random_matrix(64, 16, 10);
+    matrix y = random_matrix(32, 64, 10);
+    matrix dw = random_matrix(64, 16, 10);
+    matrix v = random_matrix(64, 16, 10);
+    matrix delta = random_matrix(32, 16, 10);
+
+    save_matrix(a, "data/test/a.matrix");
+    save_matrix(w, "data/test/w.matrix");
+    save_matrix(dw, "data/test/dw.matrix");
+    save_matrix(v, "data/test/v.matrix");
+    save_matrix(delta, "data/test/delta.matrix");
+    save_matrix(y, "data/test/y.matrix");
+
+    matrix alog = copy_matrix(a);
+    activate_matrix(alog, LOGISTIC);
+    save_matrix(alog, "data/test/alog.matrix");
+
+    matrix arelu = copy_matrix(a);
+    activate_matrix(arelu, RELU);
+    save_matrix(arelu, "data/test/arelu.matrix");
+
+    matrix alrelu = copy_matrix(a);
+    activate_matrix(alrelu, LRELU);
+    save_matrix(alrelu, "data/test/alrelu.matrix");
+
+    matrix asoft = copy_matrix(a);
+    activate_matrix(asoft, SOFTMAX);
+    save_matrix(asoft, "data/test/asoft.matrix");
+
+    matrix glog = copy_matrix(a);
+    gradient_matrix(y, LOGISTIC, glog);
+    save_matrix(glog, "data/test/glog.matrix");
+
+    matrix grelu = copy_matrix(a);
+    gradient_matrix(y, RELU, grelu);
+    save_matrix(grelu, "data/test/grelu.matrix");
+
+    matrix glrelu = copy_matrix(a);
+    gradient_matrix(y, LRELU, glrelu);
+    save_matrix(glrelu, "data/test/glrelu.matrix");
+
+    matrix gsoft = copy_matrix(a);
+    gradient_matrix(y, SOFTMAX, gsoft);
+    save_matrix(gsoft, "data/test/gsoft.matrix");
+
+    layer l = make_layer(64, 16, LRELU);
+    l.w = w;
+    l.dw = dw;
+    l.v = v;
+
+    matrix out = forward_layer(&l, a);
+    save_matrix(out, "data/test/out.matrix");
+
+    matrix dx = backward_layer(&l, delta);
+    save_matrix(l.dw, "data/test/truth_dw.matrix");
+    save_matrix(l.v, "data/test/truth_v.matrix");
+    save_matrix(dx, "data/test/truth_dx.matrix");
+
+    update_layer(&l, .01, .9, .01);
+    save_matrix(l.dw, "data/test/updated_dw.matrix");
+    save_matrix(l.w, "data/test/updated_w.matrix");
+    save_matrix(l.v, "data/test/updated_v.matrix");
+}
+
+void test_hw5()
+{
+    test_activate_matrix();
+    test_gradient_matrix();
+    test_layer();
+    printf("%d tests, %d passed, %d failed\n", tests_total, tests_total-tests_fail, tests_fail);
+}
+

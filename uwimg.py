@@ -233,6 +233,34 @@ optical_flow_webcam = lib.optical_flow_webcam
 optical_flow_webcam.argtypes = [c_int, c_int, c_int]
 optical_flow_webcam.restype = None
 
+##### HOMEWORK 5
+
+train_model = lib.train_model
+train_model.argtypes = [MODEL, DATA, c_int, c_int, c_double, c_double, c_double]
+train_model.restype = None
+
+accuracy_model = lib.accuracy_model
+accuracy_model.argtypes = [MODEL, DATA]
+accuracy_model.restype = c_double
+
+forward_model = lib.forward_model
+forward_model.argtypes = [MODEL, MATRIX]
+forward_model.restype = MATRIX
+
+load_classification_data = lib.load_classification_data
+load_classification_data.argtypes = [c_char_p, c_char_p, c_int]
+load_classification_data.restype = DATA
+
+make_layer = lib.make_layer
+make_layer.argtypes = [c_int, c_int, c_int]
+make_layer.restype = LAYER
+
+def make_model(layers):
+    m = MODEL()
+    m.n = len(layers)
+    m.layers = (LAYER*m.n) (*layers)
+    return m
+
 if __name__ == "__main__":
     im = load_image("data/dog.jpg")
     save_image(im, "hey")
