@@ -153,7 +153,7 @@ We'll also need a list of the images in our training and test set. To do this yo
     find train -name \*.png > mnist.train
     find test -name \*.png > mnist.test
 
-Answer the questions in this section inside the `classifier.c` file at the bottom as comments. Answers can be short, 1-2 sentences.
+Answer the questions in this section in the PDF file.
 
 ### 2.1 Train a linear softmax model ###
 
