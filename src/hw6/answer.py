@@ -79,8 +79,8 @@ class DeepCNN(nn.Module):
 Question 5
 
 TODO:
-    change the train_transformer to a tranformer with random horizontal flip,
-    random crop, and random affine transformation
+    change the train_transformer to a tranformer with random horizontal flip
+    and random affine transformation
 
     1. It should randomly flip the image horizontally with probability 50%
     2. It should apply random affine transformation to the image, which randomly rotate the image 
