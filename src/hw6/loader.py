@@ -16,10 +16,10 @@ class ImgDataSet(torch.utils.data.Dataset):
         return self.df.shape[0]
 
     def __getitem__(self, idx):
-        imgpath = self.df.ix[idx, "path"]
+        imgpath = self.df.loc[idx, "path"]
         img = Image.open(imgpath)
 
-        label = self.df.ix[idx, "label"]
+        label = self.df.loc[idx, "label"]
 
         if self.transformer is not None:
             img = self.transformer(img)
